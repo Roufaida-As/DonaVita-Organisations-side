@@ -16,6 +16,7 @@ class Services {
     String password,
     String fullname,
     String phonenumber,
+    
   ) async {
     try {
       Dialogs.showLoadingDialog();
@@ -31,6 +32,7 @@ class Services {
         'email': email,
         'fullname': fullname,
         'phonenumber': phonenumber,
+        'logoURL': "",
       });
       Get.back();
       Get.to(() => const ProfilePage());

@@ -4,9 +4,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
+import 'package:secondapp/login%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/announcement_card.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
 import 'package:secondapp/profile%20work/organisation_model.dart';
+import 'package:secondapp/utils/dialogs.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,8 +19,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late Organisation organisation;
+
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
+  late AddLogo addLogo;
 
   List<Announcement> announcements = [
     Announcement(
@@ -74,8 +78,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         top: 30,
                         left: 8,
                         child: Text(
-                          "Organisation ",
                           textAlign: TextAlign.center,
+                          "organisation ",
                           style: TextStyle(
                               color: AppColors.background,
                               fontSize: 12,
@@ -83,9 +87,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         )),
                     const Positioned(
                         top: 45,
-                        left: 30,
+                        left: 32,
                         child: Text(
-                          " Logo",
+                          "logo",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: AppColors.background,
@@ -94,13 +98,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         )),
                     Positioned(
                         top: 48,
-                        left: 25,
+                        left: 22,
                         child: IconButton(
                           icon: const Icon(Icons.add,
                               color: AppColors.background),
-                          onPressed: () {
+                          onPressed: () async {
                             chooseImage(ImageSource.gallery);
                             uploadImage(_imageFile!);
+                            addLogoUrl();
                           },
                         )),
                   ],
@@ -229,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(11.0),
               child: Text(
                 "Announcements",
                 textAlign: TextAlign.left,
@@ -291,6 +296,19 @@ class _ProfilePageState extends State<ProfilePage> {
       return imageUrl;
     } catch (e) {
       return e.toString();
+    }
+  }
+
+  void addLogoUrl() async {
+    AddLogo addLogo = AddLogo();
+
+    // Get current user ID
+    String? userId = await addLogo.getCurrentUserId();
+    if (userId != null) {
+      // Add or update logo URL for the user
+      await addLogo.addLogoURLForUser(userId, await uploadImage(_imageFile!));
+    } else {
+      Dialogs.showSnackBar('Error', 'No user signed in !', true);
     }
   }
 }

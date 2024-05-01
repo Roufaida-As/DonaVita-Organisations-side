@@ -34,7 +34,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
     return Column(
       children: [
         Container(
-          height: 70,
+          height: 77,
           width: double.infinity,
           decoration: const BoxDecoration(
               color: AppColors.containercolor,
@@ -103,7 +103,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )
