@@ -16,7 +16,6 @@ class Services {
     String password,
     String fullname,
     String phonenumber,
-    
   ) async {
     try {
       Dialogs.showLoadingDialog();

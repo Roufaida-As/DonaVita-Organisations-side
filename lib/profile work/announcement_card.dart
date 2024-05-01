@@ -42,7 +42,6 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                   top: BorderSide(color: AppColors.highicons),
                   bottom: BorderSide(color: AppColors.highicons))),
           child: Stack(
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               //Announcement pic
               Positioned(

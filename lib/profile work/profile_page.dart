@@ -1,12 +1,13 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
-import 'package:secondapp/login%20work/add_org_logo.dart';
+import 'package:secondapp/profile%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/announcement_card.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
+import 'package:secondapp/profile%20work/organisation_service.dart';
 import 'package:secondapp/profile%20work/organisation_model.dart';
 import 'package:secondapp/utils/dialogs.dart';
 
@@ -18,7 +19,28 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Organisation organisation;
+  Organisation? organisation;
+
+  Future<void> fetchOrganisationInfos() async {
+    FirestoreService firestoreService = FirestoreService();
+
+    String? userId = await firestoreService.getCurrentUserId();
+    try {
+      if (userId != null) {
+        Organisation? organisation =
+            await firestoreService.getOrganisationById(userId);
+        if (mounted) {
+          setState(() {
+            this.organisation = organisation;
+          });
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('debug: $Error fetching announcements');
+      }
+    }
+  }
 
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
@@ -40,11 +62,15 @@ class _ProfilePageState extends State<ProfilePage> {
       time: "2024",
     )
   ];
-
-  Future<void> fetchAnnouncements() async {}
+  @override
+  void initState() {
+    fetchOrganisationInfos();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    bool isLogoHidden = organisation?.organizationLogoUrl == "";
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -60,60 +86,82 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
-                      image: AssetImage("assets/Ellipse 30.png"),
-                    )),
-                child: Stack(
-                  children: [
-                    const Positioned(
-                        top: 30,
-                        left: 8,
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          "organisation ",
-                          style: TextStyle(
-                              color: AppColors.background,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700),
-                        )),
-                    const Positioned(
-                        top: 45,
-                        left: 32,
-                        child: Text(
-                          "logo",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: AppColors.background,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700),
-                        )),
-                    Positioned(
-                        top: 48,
-                        left: 22,
-                        child: IconButton(
-                          icon: const Icon(Icons.add,
-                              color: AppColors.background),
-                          onPressed: () async {
-                            chooseImage(ImageSource.gallery);
-                            uploadImage(_imageFile!);
-                            addLogoUrl();
-                          },
-                        )),
-                  ],
-                ),
-              ),
-            ),
+                padding: const EdgeInsets.all(10.0),
+                child: isLogoHidden
+                    ? Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: const DecorationImage(
+                              image: AssetImage("assets/Ellipse 30.png"),
+                            )),
+                        child: Stack(
+                          children: [
+                            const Positioned(
+                                top: 30,
+                                left: 8,
+                                child: Text(
+                                  textAlign: TextAlign.center,
+                                  "organisation ",
+                                  style: TextStyle(
+                                      color: AppColors.background,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                            const Positioned(
+                                top: 45,
+                                left: 32,
+                                child: Text(
+                                  "logo",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: AppColors.background,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                            Positioned(
+                                top: 48,
+                                left: 22,
+                                child: IconButton(
+                                  icon: const Icon(Icons.add,
+                                      color: AppColors.background),
+                                  onPressed: () async {
+                                    chooseImage(ImageSource.gallery);
+                                    uploadImage(_imageFile!);
+                                    addLogoUrl();
+                                    setState(() {
+                                      isLogoHidden = !isLogoHidden;
+                                    });
+                                  },
+                                )),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              45), // Half of width/height to make it a circle
+                          color: Colors
+                              .transparent, // Set a transparent background color
+                        ),
+                        child: ClipOval(
+                          child: Image.network(
+                            organisation?.organizationLogoUrl ?? "",
+                            width: 90,
+                            height: 90,
+                            fit: BoxFit.cover, // Cover the entire container
+                          ),
+                        ),
+                      )),
             const SizedBox(
-              width: 10,
+              width: 4,
             ),
             Column(
               children: [
@@ -140,11 +188,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: AppColors.icons,
                     width: 1,
                   ))),
-                  child: const Text(
-                    "Al-Baraka"
-                    //organisation.organizationName
-                    ,
-                    style: TextStyle(
+                  child: Text(
+                    organisation?.organizationName ?? "",
+                    style: const TextStyle(
                         fontFamily: 'Nunito',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -176,11 +222,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: AppColors.icons,
                     width: 1,
                   ))),
-                  child: const Text(
-                    "AlBarakaOrg@gmail.com"
-                    //organisation.organizationEmail,
-                    ,
-                    style: TextStyle(
+                  child: Text(
+                    organisation?.organizationEmail ?? "",
+                    style: const TextStyle(
                         fontFamily: 'Nunito',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -212,11 +256,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: AppColors.icons,
                     width: 1,
                   ))),
-                  child: const Text(
-                    "0558727069"
-                    //organisation.phoneNumber,
-                    ,
-                    style: TextStyle(
+                  child: Text(
+                    organisation?.phoneNumber ?? "",
+                    style: const TextStyle(
                         fontFamily: 'Nunito',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
