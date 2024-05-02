@@ -2,8 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:secondapp/firebase_options.dart';
-import 'package:secondapp/login%20work/signup_page.dart';
-
+import 'package:secondapp/home_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Initialize Flutter framework
   await Firebase.initializeApp(
@@ -19,6 +18,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-        debugShowCheckedModeBanner: false, home: SignUp());
+        debugShowCheckedModeBanner: false, home: HomeScreen());
   }
 }

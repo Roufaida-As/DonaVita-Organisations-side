@@ -2,11 +2,13 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/profile%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/announcement_card.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
+import 'package:secondapp/profile%20work/edit_profile_page.dart';
 import 'package:secondapp/profile%20work/organisation_service.dart';
 import 'package:secondapp/profile%20work/organisation_model.dart';
 import 'package:secondapp/utils/dialogs.dart';
@@ -64,8 +66,8 @@ class _ProfilePageState extends State<ProfilePage> {
   ];
   @override
   void initState() {
-    fetchOrganisationInfos();
     super.initState();
+    fetchOrganisationInfos();
   }
 
   @override
@@ -74,14 +76,29 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(
-          "Profile",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-              fontSize: 30,
-              fontFamily: 'Nunito',
-              color: AppColors.highicons,
-              fontWeight: FontWeight.bold),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Profile",
+              style: TextStyle(
+                  fontSize: 30,
+                  fontFamily: 'Nunito',
+                  color: AppColors.highicons,
+                  fontWeight: FontWeight.bold),
+            ),
+            GestureDetector(
+              onTap: () => Get.to(() => const EditProfile()),
+              child: const Text(
+                "Edit profile",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Nunito',
+                    color: AppColors.highicons,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
         ),
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -136,6 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     setState(() {
                                       isLogoHidden = !isLogoHidden;
                                     });
+                                    fetchOrganisationInfos();
                                   },
                                 )),
                           ],
