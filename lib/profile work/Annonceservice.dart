@@ -2,10 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:projectfinal/pages/homepage%20work/storage_service.dart';
+class AnnouncementService { 
+  final String orgId;
+  late final CollectionReference announcementsCollection;
+  late final CollectionReference announcementsCollection2;
 
-class AnnouncementService {
-  final CollectionReference announcementsCollection =
-      FirebaseFirestore.instance.collection('Organisations');
+  AnnouncementService(this.orgId) {
+    announcementsCollection = FirebaseFirestore.instance.collection('Organisations');
+    announcementsCollection2 = FirebaseFirestore.instance.collection('organisationsAsUsers').doc(orgId).collection('annonces');
+  }
 
   Future<List<Announcement>> getAnnouncements() async {
     QuerySnapshot querySnapshot = await announcementsCollection.get();
@@ -43,5 +48,18 @@ annonceId: annDoc.id,
     }
 
     return announcements;
+  }
+  Future<void> addAnnonce(String orgname,String orglogourl,String orgId,String category,String title,String description,String quantityNeeded,String deadline,String imageUrl,String quantityDonated){
+    return announcementsCollection2.add({
+'orgName' : orgname,
+'OrganisationId':orgId,
+'category':category,
+'annonceTitle':title,
+'description':description,
+'quantityNeeded':quantityNeeded,
+'endDate':deadline,
+'quantityDonated':'0',
+
+    });
   }
 }

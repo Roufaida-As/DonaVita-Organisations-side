@@ -34,4 +34,5 @@ class Announcement {
   });
 
   // Add any additional methods if needed
+
 }

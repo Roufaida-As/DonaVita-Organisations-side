@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:secondapp/Theme/colors.dart';
+import 'package:secondapp/profile%20work/Annonceservice.dart';
 import 'package:secondapp/profile%20work/Mytextfield.dart';
 import 'package:date_format_field/date_format_field.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 class AnnonceDetails extends StatefulWidget {
+  //final Organisation organisation;
   const AnnonceDetails({super.key});
 
   @override
@@ -11,6 +13,17 @@ class AnnonceDetails extends StatefulWidget {
 }
 
 class _AnnonceDetailsState extends State<AnnonceDetails> {
+ 
+  late AnnouncementService annonceservice= AnnouncementService('5TLrUE6UaLXUvDFsMfRbGQTfqqK2');
+  TextEditingController titlecontroller = TextEditingController();
+   TextEditingController descriptioncontroller= TextEditingController();
+    TextEditingController quantitycontroller= TextEditingController();
+     TextEditingController deadlinecontroller = TextEditingController();
+    late  String category;
+    bool food=true;
+    bool clothes=true;
+    bool money=true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +80,7 @@ child: Padding(
                     mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text('Select a category:',textAlign: TextAlign.left,style: TextStyle(color: AppColors.icons,fontSize: 20,fontFamily: 'Nunito',fontWeight: FontWeight.w800),),
+                     const Text('Select a category:',textAlign: TextAlign.left,style: TextStyle(color: AppColors.icons,fontSize: 20,fontFamily: 'Nunito',fontWeight: FontWeight.w800),),
                      const SizedBox(height: 10,),
                       Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -75,10 +88,16 @@ child: Padding(
                     //food category
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.highicons,
+                          backgroundColor: food? AppColors.highicons : Colors.grey,
                         ),
-                        onPressed: () => {
-                           
+                        onPressed: ()  {
+                          setState(() {
+                            food=true;
+       category='Food';
+                           clothes=false;
+money=false;
+  });
+                        
                             },
                         child: const Text(
                           "FOOD",
@@ -87,14 +106,21 @@ child: Padding(
                               color: AppColors.background,
                               fontWeight: FontWeight.bold),
                         )),
-                        SizedBox(width: 15,),
+                        const SizedBox(width: 15,),
                     //clothes category
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.icons,
+                          backgroundColor: clothes? AppColors.icons : Colors.grey,
                         ),
-                        onPressed: () => {
-                             
+                        onPressed: () {
+                                  setState(() {
+                                    clothes=true;
+          category='Clothes';
+                              money=false;
+                              food=false;
+  });
+                           
+
                             },
                         child: const Text(
                           "CLOTHES",
@@ -103,34 +129,40 @@ child: Padding(
                               color: AppColors.background,
                               fontWeight: FontWeight.bold),
                         )),
-  SizedBox(width: 15,),
+  const SizedBox(width: 15,),
                     //money category
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.clear,
+                          backgroundColor: money? AppColors.clear : Colors.grey,
                         ),
-                        onPressed: () => {
-                              
+                        onPressed: () {
+                           setState(() {
+          money=true;
+                               category='Money';
+                               food=false;
+                               clothes=false;
+  });
+             
                             },
-                        child: const Text(
+                        child:  Text(
                           "MONEY",
                           style: TextStyle(
                               fontFamily: 'Nunito',
-                              color: AppColors.icons,
+                              color: money? AppColors.icons : Colors.white,
                               fontWeight: FontWeight.bold),
                         ))
                   ],
                 ),
                const SizedBox(height: 20,),
-             const   Mytextfield(height: 50, text: 'Title:'),
+               Mytextfield(height: 50, text: 'Title:',controller: titlecontroller,),
                 const SizedBox(height: 20,),
-                const Mytextfield(height: 282, text: 'Description:'),
+                 Mytextfield(height: 282, text: 'Description:', controller: descriptioncontroller,),
                 const SizedBox(height: 20,),
-                const SizedBox(
+                 SizedBox(
                   width: 200,
                   child: TextField(
-
-                    decoration: InputDecoration(
+controller: quantitycontroller,
+                    decoration: const InputDecoration(
                       isDense: true,
    suffixIcon:Text("person",style: TextStyle(
                         fontFamily: 'Nunito',
@@ -165,15 +197,22 @@ child: Padding(
                   height: 28,
                   width: 32,
                   decoration: BoxDecoration(border: Border.all(width: 2,color: AppColors.icons)),
-                  child: Center(child: Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
+                  child: const Center(child: Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
                 ),
                 const      SizedBox(height: 15,),
                const Text('Deadline:',style: TextStyle(fontFamily: 'Nunito',fontSize: 14,color: AppColors.icons,fontWeight: FontWeight.w700),),
                 
-                SizedBox(
-                  width: 200,
+                
+             
+              
+               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                  SizedBox(
+                  width: 150,
                   child: DateFormatField(
-                    decoration: InputDecoration(
+                    controller: deadlinecontroller,
+                    decoration: const InputDecoration(
                       enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColors.icons)),
                       focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColors.icons))
                     ),
@@ -183,7 +222,38 @@ child: Padding(
                           print(date.toString);
                       }
                   ),
-                )
+                ),
+
+                   GestureDetector(
+                        onTap: () {
+                           showDialog(context: context, builder: (context){
+                   return Center(child: LoadingAnimationWidget.waveDots(color: AppColors.icons, size: 100),);
+                            },);
+                                
+                          annonceservice.addAnnonce('Aimer Rihem','', '5TLrUE6UaLXUvDFsMfRbGQTfqqK2', category, titlecontroller.text, descriptioncontroller.text, quantitycontroller.text, deadlinecontroller.text,'','');
+                          titlecontroller.clear();
+                          descriptioncontroller.clear();
+                          setState(() {
+                            food=true;
+                          money=true;
+                          clothes=true;
+                          });
+                          
+                          quantitycontroller.clear();
+                          deadlinecontroller.clear();
+                   
+                          Navigator.of(context, rootNavigator: true).pop();
+                        },
+                        child: Container(
+                              width: 140,
+                              decoration: BoxDecoration(color: AppColors.highicons,borderRadius: BorderRadius.circular(40)),
+                              child: const Padding(padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
+                              child: Center(child: Text('post',style: TextStyle(color: Colors.white,fontFamily: 'Roboto',fontSize: 18,fontWeight: FontWeight.w400),)),),
+                                         ),
+                      ),
+                 ],
+               ),
+               
                   ],
                   
                 )

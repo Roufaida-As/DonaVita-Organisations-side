@@ -3,9 +3,10 @@ import 'package:secondapp/Theme/colors.dart';
 
 class Mytextfield extends StatelessWidget {
   final double height;
+  final TextEditingController controller;
 
   final String text;
-  const Mytextfield({super.key, required this.height,required this.text});
+  const Mytextfield({super.key, required this.height,required this.text,required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,10 @@ class Mytextfield extends StatelessWidget {
       height:height,
       width: double.infinity,
       child: TextField(
+        
         maxLines: null,
     expands: true,
+    controller: controller,
         decoration: InputDecoration(
           labelText: text,
            floatingLabelBehavior: FloatingLabelBehavior.always,
