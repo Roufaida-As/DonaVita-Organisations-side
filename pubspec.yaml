@@ -74,9 +74,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logo 2.png
+    - assets/gg.png
+    - assets/fb.png
     - assets/Ellipse 8.png
     - assets/Rectangle 7.png
     - assets/Name.png
+    - assets/exclamation.png
     - assets/Slogan.png
     - assets/Ellipse 3.png
     - assets/eva_arrow-back-outline.png

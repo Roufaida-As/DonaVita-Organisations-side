@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:secondapp/Theme/colors.dart';
+import 'package:secondapp/home_screen.dart';
 import 'package:secondapp/login%20work/login_page.dart';
 import 'package:secondapp/login%20work/verify_email_page.dart';
-import 'package:secondapp/profile%20work/profile_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -49,16 +49,16 @@ class _SplashScreenState extends State<SplashScreen> {
 void initialScreen() {
   if (FirebaseAuth.instance.currentUser != null) {
     if (FirebaseAuth.instance.currentUser!.emailVerified == false) {
-      Get.to(() => const VerifyEmailPage(),
+      Get.to(() => const VerifyEmail(),
           transition: Transition.fadeIn,
           duration: const Duration(milliseconds: 500));
     } else {
-      Get.to(() => const ProfilePage(),
+      Get.to(() => const HomeScreen(),
           transition: Transition.fadeIn,
           duration: const Duration(milliseconds: 500));
     }
   } else {
-    Get.to(() => const LoginPage(),
+    Get.to(() => const Login(),
         transition: Transition.fadeIn,
         duration: const Duration(milliseconds: 500));
   }
