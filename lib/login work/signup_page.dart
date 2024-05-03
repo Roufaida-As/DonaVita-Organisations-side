@@ -44,11 +44,11 @@ class _SignUpState extends State<SignUp> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               //logo
-              const SizedBox(height: 104),
+              const SizedBox(height: 45),
 
               Image.asset("assets/logo 2.png", width: 130, height: 102.78),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 5),
               const Text(
                 "Create an Account",
                 style: TextStyle(
@@ -68,7 +68,7 @@ class _SignUpState extends State<SignUp> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 13),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                             fontWeight: FontWeight.w500)),
                   ),
                   SizedBox(
-                    height: 55,
+                    height: 50,
                     width: 350,
                     child: TextFormField(
                       controller: emailcontroller,
@@ -121,7 +121,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
-              //textfield pw
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -135,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                             fontWeight: FontWeight.w500)),
                   ),
                   SizedBox(
-                    height: 55,
+                    height: 50,
                     width: 350,
                     child: TextFormField(
                       controller: fullnamecontroller,
@@ -182,7 +182,7 @@ class _SignUpState extends State<SignUp> {
                             fontWeight: FontWeight.w500)),
                   ),
                   SizedBox(
-                    height: 55,
+                    height: 50,
                     width: 350,
                     child: TextFormField(
                       controller: phonenumbercontroller,
@@ -229,7 +229,7 @@ class _SignUpState extends State<SignUp> {
                             fontWeight: FontWeight.w500)),
                   ),
                   SizedBox(
-                    height: 55,
+                    height: 50,
                     width: 350,
                     child: TextFormField(
                       controller: pwcontroller,
@@ -286,7 +286,7 @@ class _SignUpState extends State<SignUp> {
                             fontWeight: FontWeight.w500)),
                   ),
                   SizedBox(
-                    height: 55,
+                    height: 50,
                     width: 350,
                     child: TextFormField(
                       controller: confirmpwcontroller,
@@ -362,7 +362,7 @@ class _SignUpState extends State<SignUp> {
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  const LoginPage()));
+                                  const Login()));
                     },
                     child: const Text(
                       "Sign in",
@@ -385,7 +385,7 @@ class _SignUpState extends State<SignUp> {
 
   void register() async {
     if (formKey.currentState!.validate()) {
-      Services.signInWithEmailAndPassword(
+      Services.signup(
           emailcontroller.text.trim(),
           pwcontroller.text.trim(),
           fullnamecontroller.text.trim(),

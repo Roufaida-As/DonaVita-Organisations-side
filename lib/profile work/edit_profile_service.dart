@@ -17,7 +17,7 @@ class EditOrganisationInfos {
   }
 
   Future<void> editOrgInfos(
-      String userId, String name, String phonenumber, String email) async {
+      String userId, String email, String name, String phonenumber) async {
     try {
       Dialogs.showLoadingDialog();
       DocumentReference docRef =

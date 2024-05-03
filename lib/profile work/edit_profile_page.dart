@@ -20,10 +20,8 @@ class _EditProfileState extends State<EditProfile> {
   bool hidePassword = true;
   bool hideConfirmPassword = true;
   final TextEditingController emailcontroller = TextEditingController();
-  final TextEditingController pwcontroller = TextEditingController();
   final TextEditingController fullnamecontroller = TextEditingController();
   final TextEditingController phonenumbercontroller = TextEditingController();
-  final TextEditingController confirmpwcontroller = TextEditingController();
 
   Organisation? organisation;
 
@@ -108,6 +106,56 @@ class _EditProfileState extends State<EditProfile> {
                           children: <Widget>[
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: Text('Full name',
+                                  style: TextStyle(
+                                      color: AppColors.icons,
+                                      fontSize: 16,
+                                      fontFamily: 'Nunito',
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: SizedBox(
+                                height: 45,
+                                width: 350,
+                                child: TextFormField(
+                                  controller: fullnamecontroller,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Field is required";
+                                    }
+                                    return null;
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  style: const TextStyle(
+                                      fontFamily: 'Nunito',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.clear),
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.all(12),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: AppColors.icons),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: AppColors.icons),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
                               child: Text('Email',
                                   style: TextStyle(
                                       color: AppColors.icons,
@@ -116,8 +164,7 @@ class _EditProfileState extends State<EditProfile> {
                                       fontWeight: FontWeight.w500)),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.only(bottom: 5),
                               child: SizedBox(
                                 height: 45,
                                 width: 350,
@@ -157,58 +204,7 @@ class _EditProfileState extends State<EditProfile> {
                           ],
                         ),
                         const SizedBox(
-                          height: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Text('Full name',
-                                  style: TextStyle(
-                                      color: AppColors.icons,
-                                      fontSize: 16,
-                                      fontFamily: 'Nunito',
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: SizedBox(
-                                height: 45,
-                                width: 350,
-                                child: TextFormField(
-                                  controller: fullnamecontroller,
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Field is required";
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.text,
-                                  style: const TextStyle(
-                                      fontFamily: 'Nunito',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.clear),
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.all(12),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.icons),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.icons),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
+                          height: 15,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,8 +219,7 @@ class _EditProfileState extends State<EditProfile> {
                                       fontWeight: FontWeight.w500)),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.only(bottom: 5),
                               child: SizedBox(
                                 height: 45,
                                 width: 350,
@@ -295,7 +290,7 @@ class _EditProfileState extends State<EditProfile> {
     // Get current user ID
     String? userId = await editInofs.getCurrentUserId();
     if (userId != null) {
-      // Add or update logo URL for the user
+      //  update organisation inofs
       await editInofs.editOrgInfos(userId, emailcontroller.text,
           fullnamecontroller.text, phonenumbercontroller.text);
       Get.back();
