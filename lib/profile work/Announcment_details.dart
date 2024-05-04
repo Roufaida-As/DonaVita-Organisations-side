@@ -1,29 +1,45 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/profile%20work/Annonceservice.dart';
 import 'package:secondapp/profile%20work/Mytextfield.dart';
 import 'package:date_format_field/date_format_field.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:secondapp/profile%20work/add_image_url.dart';
+import 'package:secondapp/profile%20work/add_org_logo.dart';
+import 'package:secondapp/profile%20work/organisation_model.dart';
+import 'package:secondapp/utils/dialogs.dart';
 class AnnonceDetails extends StatefulWidget {
-  //final Organisation organisation;
-  const AnnonceDetails({super.key});
+  final Organisation  organisation;
+  const AnnonceDetails({super.key, required this.organisation});
 
   @override
   State<AnnonceDetails> createState() => _AnnonceDetailsState();
 }
 
 class _AnnonceDetailsState extends State<AnnonceDetails> {
- 
-  late AnnouncementService annonceservice= AnnouncementService('5TLrUE6UaLXUvDFsMfRbGQTfqqK2');
+
+  late AnnouncementService annonceservice= AnnouncementService(widget.organisation.orgId);
   TextEditingController titlecontroller = TextEditingController();
    TextEditingController descriptioncontroller= TextEditingController();
     TextEditingController quantitycontroller= TextEditingController();
      TextEditingController deadlinecontroller = TextEditingController();
+         XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+  late AddLogo addLogo;
+  late String annonceId;
+bool image_selected=false;
     late  String category;
     bool food=true;
     bool clothes=true;
     bool money=true;
 
+bool pic_added=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,11 +209,21 @@ controller: quantitycontroller,
           const      SizedBox(height: 15,),
                const Text('upload an image:',style: TextStyle(fontFamily: 'Nunito',fontSize: 14,color: AppColors.icons,fontWeight: FontWeight.w700),),
                 const      SizedBox(height: 15,),
-                Container(
-                  height: 28,
-                  width: 32,
-                  decoration: BoxDecoration(border: Border.all(width: 2,color: AppColors.icons)),
-                  child: const Center(child: Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
+                GestureDetector(
+                  onTap: () {
+              // chooseImage(ImageSource.gallery);
+                                  //  uploadImage(_imageFile!);
+                                
+                setState(() {
+                  image_selected=true;
+                });
+                  },
+                  child: Container(
+                    height: 28,
+                    width: 32,
+                    decoration: BoxDecoration(border: Border.all(width: 2,color: AppColors.icons)),
+                    child:  Center(child: Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
+                  ),
                 ),
                 const      SizedBox(height: 15,),
                const Text('Deadline:',style: TextStyle(fontFamily: 'Nunito',fontSize: 14,color: AppColors.icons,fontWeight: FontWeight.w700),),
@@ -225,12 +251,13 @@ controller: quantitycontroller,
                 ),
 
                    GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                            showDialog(context: context, builder: (context){
                    return Center(child: LoadingAnimationWidget.waveDots(color: AppColors.icons, size: 100),);
                             },);
                                 
-                          annonceservice.addAnnonce('Aimer Rihem','', '5TLrUE6UaLXUvDFsMfRbGQTfqqK2', category, titlecontroller.text, descriptioncontroller.text, quantitycontroller.text, deadlinecontroller.text,'','');
+                      annonceservice.addAnnonce(widget.organisation.organizationName,widget.organisation.organizationLogoUrl,widget.organisation.orgId, category, titlecontroller.text, descriptioncontroller.text, quantitycontroller.text, deadlinecontroller.text,'');
+
                           titlecontroller.clear();
                           descriptioncontroller.clear();
                           setState(() {
@@ -241,6 +268,8 @@ controller: quantitycontroller,
                           
                           quantitycontroller.clear();
                           deadlinecontroller.clear();
+                          //addImageUrl(annonceId);
+                          print('informations uploaded');
                    
                           Navigator.of(context, rootNavigator: true).pop();
                         },
@@ -261,4 +290,5 @@ controller: quantitycontroller,
     ));
   
   }
+
 }

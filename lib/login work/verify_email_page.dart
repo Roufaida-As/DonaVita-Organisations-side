@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/home_screen.dart';
+import 'package:secondapp/login%20work/signup_page.dart';
 import 'package:secondapp/utils/button.dart';
 
 class VerifyEmail extends StatefulWidget {
@@ -39,10 +40,13 @@ class _VerifyEmailState extends State<VerifyEmail> {
     return Scaffold(
       body: Center(
           child: Padding(
+            
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+      
             //logo
             Image.asset("assets/logo 2.png"),
             const SizedBox(

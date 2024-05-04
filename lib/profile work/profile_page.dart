@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
+import 'package:secondapp/profile%20work/Announcment_details.dart';
 import 'package:secondapp/profile%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/announcement_card.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
@@ -306,14 +307,20 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding:  EdgeInsets.all(10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: AppColors.highicons,
                     borderRadius: BorderRadius.circular(30)),
                 child: IconButton(
                     color: AppColors.highicons,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                     AnnonceDetails(organisation: organisation!)),
+            );
+                    },
                     icon: const Icon(
                       Icons.add,
                       color: AppColors.background,

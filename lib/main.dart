@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:secondapp/firebase_options.dart';
 import 'package:secondapp/profile%20work/Announcment_details.dart';
+import 'package:secondapp/splash_screen.dart';
 
 
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
 
-        debugShowCheckedModeBanner: false, home: AnnonceDetails());
+        debugShowCheckedModeBanner: false, home: SplashScreen());
 
 }
 }

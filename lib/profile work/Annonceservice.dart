@@ -49,7 +49,7 @@ annonceId: annDoc.id,
 
     return announcements;
   }
-  Future<void> addAnnonce(String orgname,String orglogourl,String orgId,String category,String title,String description,String quantityNeeded,String deadline,String imageUrl,String quantityDonated){
+  Future<void> addAnnonce(String orgname,String orglogourl,String orgId,String category,String title,String description,String quantityNeeded,String deadline,String imageUrl){
     return announcementsCollection2.add({
 'orgName' : orgname,
 'OrganisationId':orgId,
@@ -59,7 +59,10 @@ annonceId: annDoc.id,
 'quantityNeeded':quantityNeeded,
 'endDate':deadline,
 'quantityDonated':'0',
+'ImageUrl':'',
 
     });
+   
   }
+  
 }
