@@ -59,7 +59,7 @@ annonceId: annDoc.id,
 'quantityNeeded':quantityNeeded,
 'endDate':deadline,
 'quantityDonated':'0',
-'ImageUrl':'',
+'ImageUrl':imageUrl,
 
     });
    

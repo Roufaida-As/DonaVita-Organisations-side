@@ -307,7 +307,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.all(10.0),
+              padding:  const EdgeInsets.all(10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: AppColors.highicons,

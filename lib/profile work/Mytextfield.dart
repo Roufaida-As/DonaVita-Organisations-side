@@ -14,7 +14,8 @@ class Mytextfield extends StatelessWidget {
       height:height,
       width: double.infinity,
       child: TextField(
-        
+          textAlignVertical: TextAlignVertical.top,
+        textInputAction: TextInputAction.done,
         maxLines: null,
     expands: true,
     controller: controller,

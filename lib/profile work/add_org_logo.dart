@@ -29,4 +29,5 @@ class AddLogo {
         Dialogs.showSnackBar('Error', 'Failed to add logoURL for user $userId: $error', true);
     }
   }
+  
 }

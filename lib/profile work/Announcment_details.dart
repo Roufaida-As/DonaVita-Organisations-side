@@ -1,19 +1,15 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/profile%20work/Annonceservice.dart';
 import 'package:secondapp/profile%20work/Mytextfield.dart';
 import 'package:date_format_field/date_format_field.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:secondapp/profile%20work/add_image_url.dart';
 import 'package:secondapp/profile%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/organisation_model.dart';
-import 'package:secondapp/utils/dialogs.dart';
 class AnnonceDetails extends StatefulWidget {
   final Organisation  organisation;
   const AnnonceDetails({super.key, required this.organisation});
@@ -30,16 +26,18 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
     TextEditingController quantitycontroller= TextEditingController();
      TextEditingController deadlinecontroller = TextEditingController();
          XFile? _imageFile;
+         String imageurl="imageurl";
   final ImagePicker _picker = ImagePicker();
   late AddLogo addLogo;
   late String annonceId;
 bool image_selected=false;
-    late  String category;
+     String category="money";
     bool food=true;
     bool clothes=true;
     bool money=true;
-
+String annonceid="";
 bool pic_added=false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,7 +152,7 @@ money=false;
                         onPressed: () {
                            setState(() {
           money=true;
-                               category='Money';
+                               category='money';
                                food=false;
                                clothes=false;
   });
@@ -170,7 +168,7 @@ money=false;
                   ],
                 ),
                const SizedBox(height: 20,),
-               Mytextfield(height: 50, text: 'Title:',controller: titlecontroller,),
+               Mytextfield(height: 60, text: 'Title:',controller: titlecontroller,),
                 const SizedBox(height: 20,),
                  Mytextfield(height: 282, text: 'Description:', controller: descriptioncontroller,),
                 const SizedBox(height: 20,),
@@ -178,29 +176,26 @@ money=false;
                   width: 200,
                   child: TextField(
 controller: quantitycontroller,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       isDense: true,
-   suffixIcon:Text("person",style: TextStyle(
-                        fontFamily: 'Nunito',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.clear
-                      ),),
-   suffixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
+   suffixIcon:Icon( category == "money" ? Icons.monetization_on : Icons.person ,
+  color: AppColors.clear,
+),
+   suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
                       
                       
                       labelText: 'Quantity needed:',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 14,
                     color: AppColors.icons,
                     fontWeight: FontWeight.w700,
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                   enabledBorder:  UnderlineInputBorder(
+                   enabledBorder:  const UnderlineInputBorder(
                     
                       borderSide: BorderSide(color: AppColors.icons,width: 2)),
-                      focusedBorder:  UnderlineInputBorder(
+                      focusedBorder:  const UnderlineInputBorder(
                         
                       borderSide: BorderSide(color: AppColors.icons,width: 2)),
                     ),
@@ -211,8 +206,8 @@ controller: quantitycontroller,
                 const      SizedBox(height: 15,),
                 GestureDetector(
                   onTap: () {
-              // chooseImage(ImageSource.gallery);
-                                  //  uploadImage(_imageFile!);
+               chooseImage(ImageSource.gallery);
+              
                                 
                 setState(() {
                   image_selected=true;
@@ -222,7 +217,7 @@ controller: quantitycontroller,
                     height: 28,
                     width: 32,
                     decoration: BoxDecoration(border: Border.all(width: 2,color: AppColors.icons)),
-                    child:  Center(child: Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
+                    child:  const Center(child: Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
                   ),
                 ),
                 const      SizedBox(height: 15,),
@@ -255,8 +250,8 @@ controller: quantitycontroller,
                            showDialog(context: context, builder: (context){
                    return Center(child: LoadingAnimationWidget.waveDots(color: AppColors.icons, size: 100),);
                             },);
-                                
-                      annonceservice.addAnnonce(widget.organisation.organizationName,widget.organisation.organizationLogoUrl,widget.organisation.orgId, category, titlecontroller.text, descriptioncontroller.text, quantitycontroller.text, deadlinecontroller.text,'');
+                             
+                      annonceservice.addAnnonce(widget.organisation.organizationName,widget.organisation.organizationLogoUrl,widget.organisation.orgId, category, titlecontroller.text, descriptioncontroller.text, quantitycontroller.text, deadlinecontroller.text, imageurl= await uploadImage(_imageFile!) );
 
                           titlecontroller.clear();
                           descriptioncontroller.clear();
@@ -289,6 +284,28 @@ controller: quantitycontroller,
               )))
     ));
   
+  }
+  void chooseImage(ImageSource source) async {
+    XFile? pickedFile = await _picker.pickImage(source: source);
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+  Future<String> uploadImage(XFile file) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImages =
+        referenceRoot.child('userProfileImages/$fileName.jpg');
+    Reference referenceImage = referenceDirImages.child(fileName);
+    try {
+      await referenceImage.putFile(File(file.path));
+      String imageUrl = await referenceImage.getDownloadURL();
+      return imageUrl;
+    } catch (e) {
+      print("failed");
+      return e.toString();
+    }
   }
 
 }
