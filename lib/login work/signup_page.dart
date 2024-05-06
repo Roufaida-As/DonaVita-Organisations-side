@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/login%20work/login_page.dart';
 import 'package:secondapp/login%20work/services.dart';
@@ -20,7 +21,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController fullnamecontroller = TextEditingController();
   final TextEditingController phonenumbercontroller = TextEditingController();
   final TextEditingController confirmpwcontroller = TextEditingController();
-
+  final TextEditingController locationController = TextEditingController();
+  String selectedWilaya = 'Adrar'; // Variable to store the selected wilaya
   @override
   Widget build(BuildContext context) {
     void togglePassword() {
@@ -216,6 +218,55 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
+              // Inside your build method
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8),
+                    child: Text(
+                      'Location (Wilaya)',
+                      style: TextStyle(
+                        color: AppColors.icons,
+                        fontSize: 14,
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 350,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.icons, // Border color
+                          width: 2.16, // Border width
+                        ),
+                      ),
+                      child: DropdownButton<String>(
+                        value: selectedWilaya,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedWilaya = newValue!;
+                          });
+                        },
+                        items: _buildWilayasDropdownItems(),
+                        hint: const Text("Select your wilaya"),
+                        padding: const EdgeInsets.all(12),
+                        iconEnabledColor: AppColors.icons,
+                        style: const TextStyle(
+                          color: AppColors.icons,
+                          fontSize: 15,
+                        ),
+                        icon: const Icon(Icons.arrow_drop_down),
+                        isExpanded: true,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -383,13 +434,84 @@ class _SignUpState extends State<SignUp> {
         ));
   }
 
+  List<DropdownMenuItem<String>> _buildWilayasDropdownItems() {
+    List<String> wilayasList = [
+      'Adrar',
+      'Chlef',
+      'Laghouat',
+      'Oum El Bouaghi',
+      'Batna',
+      'Bejaia',
+      'Biskra',
+      'Bechar',
+      'Blida',
+      'Bouira',
+      'Tamanghasset',
+      'Tebessa',
+      'Tlemcen',
+      'Tiaret',
+      'Tizi Ouzou',
+      'Algiers',
+      'Djelfa',
+      'Jijel',
+      'Setif',
+      'Saida',
+      'Skikda',
+      'Sidi Bel Abbes',
+      'Annaba',
+      'Guelma',
+      'Constantine',
+      'Medea',
+      'Mostaganem',
+      'M\'sila',
+      'Mascara',
+      'Ouargla',
+      'Oran',
+      'El Bayadh',
+      'Illizi',
+      'Bordj Bou Arreridj',
+      'Boumerdes',
+      'El Tarf',
+      'Tindouf',
+      'Tissemsilt',
+      'El Oued',
+      'Khenchela',
+      'Souk Ahras',
+      'Tipaza',
+      'Mila',
+      'Ain Defla',
+      'Naama',
+      'Ain Temouchent',
+      'Ghardaia',
+      'Relizane',
+      'El M\'ghair',
+      'Ouled Djellal',
+      'Bordj Badji Mokhtar',
+      'Beni Abbes',
+      'Timimoun',
+      'Touggourt',
+      'Djanet',
+      'In Salah',
+      'In Guezzam',
+      'El Menia'
+    ];
+
+    return wilayasList.map((String wilaya) {
+      return DropdownMenuItem<String>(
+        value: wilaya,
+        child: Text(wilaya),
+      );
+    }).toList();
+  }
+
   void register() async {
     if (formKey.currentState!.validate()) {
       Services.signup(
           emailcontroller.text.trim(),
           pwcontroller.text.trim(),
           fullnamecontroller.text.trim(),
-          phonenumbercontroller.text.trim());
+          phonenumbercontroller.text.trim(),
+          selectedWilaya);
     }
   }
 }

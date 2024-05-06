@@ -21,6 +21,7 @@ class FirestoreService {
           organizationLogoUrl: data['logoURL'],
           phoneNumber: data['phonenumber'],
           orgId: documentSnapshot.id,
+          ville: data['ville']
         );
       } else {
         Dialogs.showSnackBar(

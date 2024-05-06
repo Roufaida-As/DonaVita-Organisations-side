@@ -307,7 +307,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: AppColors.highicons,
@@ -315,11 +315,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: IconButton(
                     color: AppColors.highicons,
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                     AnnonceDetails(organisation: organisation!)),
-            );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AnnonceDetails(organisation: organisation!)),
+                      );
                     },
                     icon: const Icon(
                       Icons.add,

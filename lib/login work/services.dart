@@ -17,6 +17,7 @@ class Services {
     String password,
     String fullname,
     String phonenumber,
+    String ville,
   ) async {
     try {
       Dialogs.showLoadingDialog();
@@ -33,6 +34,7 @@ class Services {
         'fullname': fullname,
         'phonenumber': phonenumber,
         'logoURL': "",
+        'ville': ville,
       });
       Get.back();
       Get.to(() => const VerifyEmail(), transition: Transition.fadeIn);

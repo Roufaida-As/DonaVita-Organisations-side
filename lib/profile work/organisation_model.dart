@@ -5,8 +5,10 @@ class Organisation {
 
   final String phoneNumber;
   final String orgId;
+  final String ville;
 
   Organisation({
+    required this.ville,
     required this.organizationEmail,
     required this.organizationName,
     required this.organizationLogoUrl,
