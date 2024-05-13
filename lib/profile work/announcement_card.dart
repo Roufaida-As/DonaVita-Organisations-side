@@ -48,10 +48,13 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                 top: 10,
                 left: 20,
                 bottom: 5,
-                child: SizedBox(
-                    height: 54,
-                    width: 54,
-                    child: Image.network(widget.announcement.imageUrl)),
+                child: ClipOval(
+
+                  child: SizedBox(
+                      height: 54,
+                      width: 54,
+                      child: Image.network(widget.announcement.imageUrl,fit: BoxFit.cover,)),
+                ),
               ),
               const SizedBox(
                 width: 5,

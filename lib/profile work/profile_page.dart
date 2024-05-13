@@ -165,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     setState(() {
                                       isLogoHidden = !isLogoHidden;
                                     });
-                                    fetchOrganisationInfos();
+                                   
                                   },
                                 )),
                           ],

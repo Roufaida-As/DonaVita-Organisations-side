@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/get_core.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
@@ -13,7 +13,6 @@ import 'package:date_format_field/date_format_field.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:secondapp/profile%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/organisation_model.dart';
-
 class AnnonceDetails extends StatefulWidget {
   final Organisation organisation;
   const AnnonceDetails({super.key, required this.organisation});
@@ -26,21 +25,21 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
   late AnnouncementService annonceservice =
       AnnouncementService(widget.organisation.orgId);
   TextEditingController titlecontroller = TextEditingController();
-  TextEditingController descriptioncontroller = TextEditingController();
-  TextEditingController quantitycontroller = TextEditingController();
-  TextEditingController deadlinecontroller = TextEditingController();
-  XFile? _imageFile;
-  String imageurl = "imageurl";
+   TextEditingController descriptioncontroller= TextEditingController();
+    TextEditingController quantitycontroller= TextEditingController();
+     TextEditingController deadlinecontroller = TextEditingController();
+         XFile? _imageFile;
+         String imageurl="imageurl";
   final ImagePicker _picker = ImagePicker();
   late AddLogo addLogo;
   late String annonceId;
-  bool imageselected = false;
-  String category = "money";
-  bool food = true;
-  bool clothes = true;
-  bool money = true;
-  String annonceid = "";
-  bool picadded = false;
+bool imageselected=false;
+     String category="money";
+    bool food=true;
+    bool clothes=true;
+    bool money=true;
+String annonceid="";
+bool pic_added=false;
 
   @override
   Widget build(BuildContext context) {
@@ -362,7 +361,6 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                       ],
                     ))))));
   }
-
   void chooseImage(ImageSource source) async {
     XFile? pickedFile = await _picker.pickImage(source: source);
     setState(() {
@@ -381,7 +379,9 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
       String imageUrl = await referenceImage.getDownloadURL();
       return imageUrl;
     } catch (e) {
+      print("failed");
       return e.toString();
     }
   }
+
 }

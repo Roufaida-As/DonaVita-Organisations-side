@@ -30,4 +30,5 @@ class AddLogo {
           'Error', 'Failed to add logoURL for user $userId: $error', true);
     }
   }
+  
 }
