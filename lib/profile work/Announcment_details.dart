@@ -7,7 +7,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/home_screen.dart';
-import 'package:secondapp/profile%20work/announcement_service.dart';
+import 'package:secondapp/profile%20work/Annonceservice.dart';
 import 'package:secondapp/profile%20work/Mytextfield.dart';
 import 'package:date_format_field/date_format_field.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
