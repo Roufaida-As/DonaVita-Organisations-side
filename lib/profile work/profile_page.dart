@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
+
 import 'package:secondapp/profile%20work/Announcment_details.dart';
 import 'package:secondapp/profile%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/announcement_card.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
 import 'package:secondapp/profile%20work/edit_profile_page.dart';
+import 'package:secondapp/profile%20work/fetch_announcements.dart';
+
 import 'package:secondapp/profile%20work/organisation_service.dart';
 import 'package:secondapp/profile%20work/organisation_model.dart';
 import 'package:secondapp/utils/dialogs.dart';
@@ -22,6 +25,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  List<Announcement> announcements = [];
+
   Organisation? organisation;
 
   Future<void> fetchOrganisationInfos() async {
@@ -40,6 +45,27 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } catch (e) {
       if (kDebugMode) {
+        print('debug: $Error fetching organisation');
+      }
+    }
+  }
+
+  Future<void> fetchAnnouncement() async {
+    FetchAnnouncements fetchAnnouncements = FetchAnnouncements();
+
+    String? userId = await fetchAnnouncements.getCurrentUserId();
+    try {
+      if (userId != null) {
+        List<Announcement> announcements2 =
+            await fetchAnnouncements.getAnnouncementsByOrganization();
+        if (mounted) {
+          setState(() {
+            announcements = announcements2;
+          });
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
         print('debug: $Error fetching announcements');
       }
     }
@@ -49,25 +75,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final ImagePicker _picker = ImagePicker();
   late AddLogo addLogo;
 
-  List<Announcement> announcements = [
-    Announcement(
-      annonceTitle: "Ramadan Iftar",
-      annonceId: "145",
-      category: "food",
-      description: "hytttttttttttttttttt",
-      endDate: "2024",
-      imageUrl: "",
-      orgId: "",
-      organizationLogoUrl: "",
-      organizationName: "",
-      quantityDonated: "16",
-      quantityNeeded: "20",
-      time: "2024",
-    )
-  ];
   @override
   void initState() {
     super.initState();
+    fetchAnnouncement();
     fetchOrganisationInfos();
   }
 

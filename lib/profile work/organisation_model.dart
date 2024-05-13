@@ -16,5 +16,5 @@ class Organisation {
     required this.orgId,
   });
 
-  // Add any additional methods if needed
+ 
 }

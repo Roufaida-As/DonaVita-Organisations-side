@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
-import 'package:secondapp/profile%20work/Annonceservice.dart';
+import 'package:secondapp/home_screen.dart';
+import 'package:secondapp/profile%20work/announcement_service.dart';
 import 'package:secondapp/profile%20work/Mytextfield.dart';
 import 'package:date_format_field/date_format_field.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -24,16 +30,18 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
   TextEditingController quantitycontroller = TextEditingController();
   TextEditingController deadlinecontroller = TextEditingController();
   XFile? _imageFile;
+  String imageurl = "imageurl";
   final ImagePicker _picker = ImagePicker();
   late AddLogo addLogo;
   late String annonceId;
-  bool image_selected = false;
-  late String category;
+  bool imageselected = false;
+  String category = "money";
   bool food = true;
   bool clothes = true;
   bool money = true;
+  String annonceid = "";
+  bool picadded = false;
 
-  bool pic_added = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,7 +166,7 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                                 onPressed: () {
                                   setState(() {
                                     money = true;
-                                    category = 'Money';
+                                    category = 'money';
                                     food = false;
                                     clothes = false;
                                   });
@@ -178,7 +186,7 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                           height: 20,
                         ),
                         Mytextfield(
-                          height: 50,
+                          height: 60,
                           text: 'Title:',
                           controller: titlecontroller,
                         ),
@@ -197,20 +205,18 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                           width: 200,
                           child: TextField(
                             controller: quantitycontroller,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               isDense: true,
-                              suffixIcon: Text(
-                                "person",
-                                style: TextStyle(
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.clear),
+                              suffixIcon: Icon(
+                                category == "money"
+                                    ? Icons.monetization_on
+                                    : Icons.person,
+                                color: AppColors.clear,
                               ),
-                              suffixIconConstraints:
-                                  BoxConstraints(minWidth: 0, minHeight: 0),
+                              suffixIconConstraints: const BoxConstraints(
+                                  minWidth: 0, minHeight: 0),
                               labelText: 'Quantity needed:',
-                              labelStyle: TextStyle(
+                              labelStyle: const TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 14,
                                 color: AppColors.icons,
@@ -218,10 +224,10 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                               ),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
-                              enabledBorder: UnderlineInputBorder(
+                              enabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: AppColors.icons, width: 2)),
-                              focusedBorder: UnderlineInputBorder(
+                              focusedBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: AppColors.icons, width: 2)),
                             ),
@@ -243,11 +249,10 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // chooseImage(ImageSource.gallery);
-                            //  uploadImage(_imageFile!);
+                            chooseImage(ImageSource.gallery);
 
                             setState(() {
-                              image_selected = true;
+                              imageselected = true;
                             });
                           },
                           child: Container(
@@ -315,7 +320,7 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                                     descriptioncontroller.text,
                                     quantitycontroller.text,
                                     deadlinecontroller.text,
-                                    '');
+                                    imageurl = await uploadImage(_imageFile!));
 
                                 titlecontroller.clear();
                                 descriptioncontroller.clear();
@@ -330,8 +335,7 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                                 //addImageUrl(annonceId);
                                 print('informations uploaded');
 
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop();
+                                Get.to(() => const HomeScreen());
                               },
                               child: Container(
                                 width: 140,
@@ -357,5 +361,27 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
                         ),
                       ],
                     ))))));
+  }
+
+  void chooseImage(ImageSource source) async {
+    XFile? pickedFile = await _picker.pickImage(source: source);
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+  Future<String> uploadImage(XFile file) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImages =
+        referenceRoot.child('userProfileImages/$fileName.jpg');
+    Reference referenceImage = referenceDirImages.child(fileName);
+    try {
+      await referenceImage.putFile(File(file.path));
+      String imageUrl = await referenceImage.getDownloadURL();
+      return imageUrl;
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

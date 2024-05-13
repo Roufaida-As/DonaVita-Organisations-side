@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/home_screen.dart';
-import 'package:secondapp/login%20work/signup_page.dart';
 import 'package:secondapp/utils/button.dart';
 
 class VerifyEmail extends StatefulWidget {

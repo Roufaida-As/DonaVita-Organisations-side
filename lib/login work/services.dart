@@ -36,6 +36,7 @@ class Services {
         'logoURL': "",
         'ville': ville,
       });
+       Dialogs.showSnackBar('Success', 'signup successfully', false);
       Get.back();
       Get.to(() => const VerifyEmail(), transition: Transition.fadeIn);
     } on FirebaseAuthException catch (e) {
@@ -65,7 +66,7 @@ class Services {
       Get.back();
       Get.to(() => const HomeScreen(), transition: Transition.fadeIn);
 
-      Dialogs.showSnackBar('Success', 'login successfully', false);
+      
     } catch (e) {
       Get.back();
       Dialogs.showSnackBar('Error', 'Something went wrong !', true);
