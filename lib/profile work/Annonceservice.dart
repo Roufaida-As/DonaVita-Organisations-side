@@ -3,11 +3,16 @@ import 'package:secondapp/profile%20work/announcement_model.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:projectfinal/pages/homepage%20work/storage_service.dart';
 class AnnouncementService { 
-  final String orgId;
+  
+  final String orgId; 
+  final String annId;
   late final CollectionReference announcementsCollection;
   late final CollectionReference announcementsCollection2;
+   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  AnnouncementService(this.orgId) {
+  AnnouncementService(this.orgId,this.annId) {
+   // ignore: unused_local_variable
+
     announcementsCollection = FirebaseFirestore.instance.collection('Organisations');
     announcementsCollection2 = FirebaseFirestore.instance.collection('organisationsAsUsers').doc(orgId).collection('annonces');
   }
@@ -64,5 +69,31 @@ annonceId: annDoc.id,
     });
    
   }
+Future<Map<String, dynamic>> getAnnonce() async {
+  final docSnapshot = await db
+      .collection("organisationsAsUsers")
+      .doc(orgId)
+      .collection("annonces")
+      .doc(annId)
+      .get();
+
+  if (docSnapshot.exists) {
+    final data = docSnapshot.data();
+    final category = data?['category'];
+    final title = data?['annonceTitle'];
+    final quantityDonated = data?['quantityDonated'];
+
+    return {
+      'category': category,
+      'title': title,
+      'quantityDonated': quantityDonated,
+    };
+  } else {
+    // Handle if the document does not exist
+    throw Exception('Document does not exist');
+  }
+}
+
+ 
   
 }

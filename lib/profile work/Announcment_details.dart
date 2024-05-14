@@ -20,7 +20,7 @@ class AnnonceDetails extends StatefulWidget {
 
 class _AnnonceDetailsState extends State<AnnonceDetails> {
 
-  late AnnouncementService annonceservice= AnnouncementService(widget.organisation.orgId);
+  late AnnouncementService annonceservice= AnnouncementService(widget.organisation.orgId,'');
   TextEditingController titlecontroller = TextEditingController();
    TextEditingController descriptioncontroller= TextEditingController();
     TextEditingController quantitycontroller= TextEditingController();
@@ -87,7 +87,7 @@ appBar: AppBar(
               )
             ],
           ),
-child: Padding(
+   child: Padding(
               padding: const EdgeInsets.only(top: 40, left: 40,right: 40),
               child: SingleChildScrollView(
                 child: Column(
@@ -107,7 +107,7 @@ child: Padding(
                         onPressed: ()  {
                           setState(() {
                             food=true;
-       category='Food';
+       category='food';
                            clothes=false;
 money=false;
   });
@@ -129,7 +129,7 @@ money=false;
                         onPressed: () {
                                   setState(() {
                                     clothes=true;
-          category='Clothes';
+          category='clothes';
                               money=false;
                               food=false;
   });
@@ -170,6 +170,33 @@ money=false;
                const SizedBox(height: 20,),
                Mytextfield(height: 60, text: 'Title:',controller: titlecontroller,),
                 const SizedBox(height: 20,),
+                 Align(
+                  alignment: Alignment.bottomRight,
+                   child: GestureDetector(
+                                 onTap: () {
+                                   showDialog(
+                    context: context,
+                    builder: (context) => Positioned(
+                      top: 100,
+                      left: 50,
+                      child: AlertDialog(
+                        title: Text('Comment'),
+                        content: Text('This is a comment.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Close'),
+                          ),
+                        ],
+                      ),
+                    ),
+                                   );
+                                 },
+                                 child: Icon(Icons.mode_comment,color: AppColors.icons,),
+                               ),
+                 ),
                  Mytextfield(height: 282, text: 'Description:', controller: descriptioncontroller,),
                 const SizedBox(height: 20,),
                  SizedBox(
@@ -217,7 +244,7 @@ controller: quantitycontroller,
                     height: 28,
                     width: 32,
                     decoration: BoxDecoration(border: Border.all(width: 2,color: AppColors.icons)),
-                    child:  const Center(child: Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
+                    child:   Center(child: image_selected? const Icon(Icons.done_outline_rounded,size: 20,color:AppColors.icons) : const Icon(Icons.add_a_photo_rounded,size: 20,color: AppColors.icons,)),
                   ),
                 ),
                 const      SizedBox(height: 15,),
@@ -251,7 +278,7 @@ controller: quantitycontroller,
                    return Center(child: LoadingAnimationWidget.waveDots(color: AppColors.icons, size: 100),);
                             },);
                              
-                      annonceservice.addAnnonce(widget.organisation.organizationName,widget.organisation.organizationLogoUrl,widget.organisation.orgId, category, titlecontroller.text, descriptioncontroller.text, quantitycontroller.text, deadlinecontroller.text, imageurl= await uploadImage(_imageFile!) );
+                      annonceservice.addAnnonce(widget.organisation.organizationName,widget.organisation.organizationLogoUrl,widget.organisation.orgId, category, titlecontroller.text, descriptioncontroller.text, quantitycontroller.text, deadlinecontroller.text, await uploadImage(_imageFile!) );
 
                           titlecontroller.clear();
                           descriptioncontroller.clear();
