@@ -17,14 +17,13 @@ class EditOrganisationInfos {
   }
 
   Future<void> editOrgInfos(
-      String userId, String email, String name, String phonenumber) async {
+      String userId, String name, String phonenumber) async {
     try {
       Dialogs.showLoadingDialog();
       DocumentReference docRef =
           _firestore.collection('organisationsAsUsers').doc(userId);
 
-      await docRef.update(
-          {'email': email, 'fullname': name, 'phonenumber': phonenumber});
+      await docRef.update({'fullname': name, 'phonenumber': phonenumber});
 
       Dialogs.showSnackBar(
           'Success', 'Infos edited successfully for user $userId', false);

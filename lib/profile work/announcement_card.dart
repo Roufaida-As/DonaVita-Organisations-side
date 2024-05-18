@@ -48,10 +48,13 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                 top: 10,
                 left: 20,
                 bottom: 5,
-                child: SizedBox(
-                    height: 54,
-                    width: 54,
-                    child: Image.asset("assets/Ellipse 30.png")),
+                child: ClipOval(
+
+                  child: SizedBox(
+                      height: 54,
+                      width: 54,
+                      child: Image.network(widget.announcement.imageUrl,fit: BoxFit.cover,)),
+                ),
               ),
               const SizedBox(
                 width: 5,
@@ -96,7 +99,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        widget.announcement.time,
+                        widget.announcement.endDate,
                         style: const TextStyle(
                             color: AppColors.smalltext,
                             fontSize: 14,

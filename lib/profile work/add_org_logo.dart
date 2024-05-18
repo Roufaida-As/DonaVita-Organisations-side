@@ -23,10 +23,11 @@ class AddLogo {
 
       await docRef.update({'logoURL': logoURL});
 
-      
-      Dialogs.showSnackBar('Success', 'LogoURL added successfully for user $userId', false);
+      Dialogs.showSnackBar(
+          'Success', 'LogoURL added successfully for user $userId', false);
     } catch (error) {
-        Dialogs.showSnackBar('Error', 'Failed to add logoURL for user $userId: $error', true);
+      Dialogs.showSnackBar(
+          'Error', 'Failed to add logoURL for user $userId: $error', true);
     }
   }
   

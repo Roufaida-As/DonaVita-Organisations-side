@@ -6,6 +6,8 @@ class AnnouncementService {
   
   final String orgId; 
   final String annId;
+
+
   late final CollectionReference announcementsCollection;
   late final CollectionReference announcementsCollection2;
    final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -23,52 +25,55 @@ class AnnouncementService {
     List<Announcement> announcements = [];
 
     for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-      String orgName = doc['name'];
       String orgLogoUrl = doc['logoURL'];
-      String OrganisationId=doc.id;
-      
+     
 
       QuerySnapshot orgAnnouncementsSnapshot =
           await doc.reference.collection('annonces').get();
 
       for (var annDoc in orgAnnouncementsSnapshot.docs) {
-        Map<String, dynamic> data = annDoc.data() as Map<String, dynamic>;
         announcements.add(Announcement(
-          organizationName: orgName,
+          organizationName: annDoc['orgName'],
           organizationLogoUrl: orgLogoUrl,
-          orgId: OrganisationId,
-annonceId: annDoc.id,
+          orgId: annDoc['OrganisationId'],
+          annonceId: annDoc.id,
           category: annDoc['category'],
           annonceTitle: annDoc['annonceTitle'],
           description: annDoc['description'],
           quantityNeeded: annDoc['quantityNeeded'],
           endDate: annDoc['endDate'],
-          imageUrl: annDoc['imageUrl'],
-          quantityDonated: data.containsKey('quantityDonated')
-              ? data['quantityDonated']
-              : "not found",
-              time: '',
+          imageUrl: annDoc['ImageUrl'],
+          quantityDonated: '0',
         ));
       }
     }
 
     return announcements;
   }
-  Future<void> addAnnonce(String orgname,String orglogourl,String orgId,String category,String title,String description,String quantityNeeded,String deadline,String imageUrl){
-    return announcementsCollection2.add({
-'orgName' : orgname,
-'OrganisationId':orgId,
-'category':category,
-'annonceTitle':title,
-'description':description,
-'quantityNeeded':quantityNeeded,
-'endDate':deadline,
-'quantityDonated':'0',
-'ImageUrl':imageUrl,
 
+  Future<void> addAnnonce(
+      String orgname,
+      String orglogourl,
+      String orgId,
+      String category,
+      String title,
+      String description,
+      String quantityNeeded,
+      String deadline,
+      String imageUrl) {
+    return announcementsCollection2.add({
+      'orgName': orgname,
+      'OrganisationId': orgId,
+      'category': category,
+      'annonceTitle': title,
+      'description': description,
+      'quantityNeeded': quantityNeeded,
+      'endDate': deadline,
+      'quantityDonated': '0',
+      'ImageUrl': imageUrl,
     });
-   
   }
+
 Future<Map<String, dynamic>> getAnnonce() async {
   final docSnapshot = await db
       .collection("organisationsAsUsers")
@@ -97,3 +102,4 @@ Future<Map<String, dynamic>> getAnnonce() async {
  
   
 }
+

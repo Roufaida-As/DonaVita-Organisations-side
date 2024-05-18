@@ -4,6 +4,7 @@ import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/notifications%20work/DonnationService.dart';
 import 'package:secondapp/notifications%20work/Donnation_card.dart';
 import 'package:secondapp/notifications%20work/Donnation_model.dart';
+import 'package:secondapp/notifications%20work/fetch_profilepic.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -15,11 +16,14 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   late List<Donnation> donnations = [];
   late DonnationService donnationService;
+  late Fetchpic fetchpic ;
+ String picpath='';
 
   @override
   void initState() {
     super.initState();
-    donnationService = DonnationService(donnations[0].orgId);
+    
+    donnationService = donnations.length==0 ? DonnationService('9HliC79mP4dqx9JRgzOi29XkMhm1') : DonnationService(donnations[0].orgId);
     getDonnations();
   }
 
@@ -49,12 +53,14 @@ class _NotificationPageState extends State<NotificationPage> {
     ),
     body: Padding(
       padding: const EdgeInsets.only(top:8.0),
-      child: ListView.builder(
-        itemCount: donnations.length,
-        itemBuilder: (BuildContext context, int index) {
-          return DonnationCard(donnation: donnations[index]);
-        },
-      ),
+      child:  donnations.isEmpty ? 
+        Center(child: Text('No notifications')) : 
+        ListView.builder(
+          itemCount: donnations.length,
+          itemBuilder: (BuildContext context, int index) {
+            return DonnationCard(donnation: donnations[index]);
+          },
+        ),
     ),
     );
   }

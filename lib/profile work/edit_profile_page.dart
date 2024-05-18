@@ -19,7 +19,6 @@ class _EditProfileState extends State<EditProfile> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool hidePassword = true;
   bool hideConfirmPassword = true;
-  final TextEditingController emailcontroller = TextEditingController();
   final TextEditingController fullnamecontroller = TextEditingController();
   final TextEditingController phonenumbercontroller = TextEditingController();
 
@@ -36,7 +35,7 @@ class _EditProfileState extends State<EditProfile> {
         if (mounted) {
           setState(() {
             this.organisation = organisation;
-            emailcontroller.text = this.organisation?.organizationEmail ?? "";
+            
             fullnamecontroller.text = this.organisation?.organizationName ?? "";
             phonenumbercontroller.text = this.organisation?.phoneNumber ?? "";
           });
@@ -44,7 +43,7 @@ class _EditProfileState extends State<EditProfile> {
       }
     } catch (e) {
       if (kDebugMode) {
-        print('debug: $Error fetching announcements');
+        print('debug: $Error editing profile');
       }
     }
   }
@@ -151,61 +150,7 @@ class _EditProfileState extends State<EditProfile> {
                         const SizedBox(
                           height: 15,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Text('Email',
-                                  style: TextStyle(
-                                      color: AppColors.icons,
-                                      fontSize: 16,
-                                      fontFamily: 'Nunito',
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: SizedBox(
-                                height: 45,
-                                width: 350,
-                                child: TextFormField(
-                                  controller: emailcontroller,
-                                  validator: (value) {
-                                    if (!RegExp(
-                                            r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-                                        .hasMatch(value!)) {
-                                      return 'wrong email format';
-                                    }
-                                    if (value.isEmpty) {
-                                      return "Email is required";
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.emailAddress,
-                                  style: const TextStyle(
-                                      fontFamily: 'Nunito',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.clear),
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.all(12),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.icons),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.icons),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
+                        
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -291,7 +236,7 @@ class _EditProfileState extends State<EditProfile> {
     String? userId = await editInofs.getCurrentUserId();
     if (userId != null) {
       //  update organisation inofs
-      await editInofs.editOrgInfos(userId, emailcontroller.text,
+      await editInofs.editOrgInfos(userId,
           fullnamecontroller.text, phonenumbercontroller.text);
       Get.back();
       Get.to(() => const ProfilePage());

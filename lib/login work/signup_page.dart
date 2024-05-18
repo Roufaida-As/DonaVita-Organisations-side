@@ -20,7 +20,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController fullnamecontroller = TextEditingController();
   final TextEditingController phonenumbercontroller = TextEditingController();
   final TextEditingController confirmpwcontroller = TextEditingController();
-
+  String selectedWilaya = '1. Adrar'; // Variable to store the selected wilaya
   @override
   Widget build(BuildContext context) {
     void togglePassword() {
@@ -216,6 +216,55 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
+              // Inside your build method
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8),
+                    child: Text(
+                      'Location (Wilaya)',
+                      style: TextStyle(
+                        color: AppColors.icons,
+                        fontSize: 14,
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 350,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.icons, // Border color
+                          width: 2.16, // Border width
+                        ),
+                      ),
+                      child: DropdownButton<String>(
+                        value: selectedWilaya,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedWilaya = newValue!;
+                          });
+                        },
+                        items: _buildWilayasDropdownItems(),
+                        hint: const Text("Select your wilaya"),
+                        padding: const EdgeInsets.all(12),
+                        iconEnabledColor: AppColors.icons,
+                        style: const TextStyle(
+                          color: AppColors.icons,
+                          fontSize: 15,
+                        ),
+                        icon: const Icon(Icons.arrow_drop_down),
+                        isExpanded: true,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -383,13 +432,84 @@ class _SignUpState extends State<SignUp> {
         ));
   }
 
+  List<DropdownMenuItem<String>> _buildWilayasDropdownItems() {
+    List<String> wilayasList = [
+      "1. Adrar",
+      "2. Chlef",
+      "3. Laghouat",
+      "4. Oum El Bouaghi",
+      "5. Batna",
+      "6. Bejaia",
+      "7. Biskra",
+      "8. Bechar",
+      "9. Blida",
+      "10. Bouira",
+      "11. Tamanghasset",
+      "12. Tebessa",
+      "13. Tlemcen",
+      "14. Tiaret",
+      "15. Tizi Ouzou",
+      "16. Algiers",
+      "17. Djelfa",
+      "18. Jijel",
+      "19. Setif",
+      "20. Saida",
+      "21. Skikda",
+      "22. Sidi Bel Abbes",
+      "23. Annaba",
+      "24. Guelma",
+      "25. Constantine",
+      "26. Medea",
+      "27. Mostaganem",
+      "28. M'sila",
+      "29. Mascara",
+      "30. Ouargla",
+      "31. Oran",
+      "32. El Bayadh",
+      "33. Illizi",
+      "34. Bordj Bou Arreridj",
+      "35. Boumerdes",
+      "36. El Tarf",
+      "37. Tindouf",
+      "38. Tissemsilt",
+      "39. El Oued",
+      "40. Khenchela",
+      "41. Souk Ahras",
+      "42. Tipaza",
+      "43. Mila",
+      "44. Ain Defla",
+      "45. Naama",
+      "46. Ain Temouchent",
+      "47. Ghardaia",
+      "48. Relizane",
+      "49. El M'ghair",
+      "50. Ouled Djellal",
+      "51. Bordj Badji Mokhtar",
+      "52. Beni Abbes",
+      "53. Timimoun",
+      "54. Touggourt",
+      "55. Djanet",
+      "56. In Salah",
+      "57. In Guezzam",
+      "58. El Menia",
+    ];
+
+    return wilayasList.map((String wilaya) {
+      return DropdownMenuItem<String>(
+        value: wilaya,
+        child: Text(wilaya),
+      );
+    }).toList();
+  }
+
   void register() async {
     if (formKey.currentState!.validate()) {
       Services.signup(
           emailcontroller.text.trim(),
           pwcontroller.text.trim(),
           fullnamecontroller.text.trim(),
-          phonenumbercontroller.text.trim());
+          phonenumbercontroller.text.trim(),
+          selectedWilaya);
     }
   }
 }

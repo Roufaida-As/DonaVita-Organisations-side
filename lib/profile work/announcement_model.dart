@@ -10,13 +10,13 @@ class Announcement {
   final String orgId;
   final String annonceId;
   late final String imageUrl;
-  final String time;
+
 
   //final String organizationLogoPath;
   //final String announcementImagePath;
 
   Announcement({
-    required this.time,
+  
     required this.organizationName,
     required this.organizationLogoUrl,
     required this.category,

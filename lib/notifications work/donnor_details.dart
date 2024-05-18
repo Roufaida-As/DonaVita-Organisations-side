@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:secondapp/Theme/colors.dart';
 import 'package:secondapp/notifications%20work/Donnation_model.dart';
+import 'package:secondapp/notifications%20work/fetch_profilepic.dart';
 import 'package:secondapp/notifications%20work/notifications_page.dart';
 import 'package:secondapp/profile%20work/Annonceservice.dart';
 import 'package:secondapp/profile%20work/information.dart';
@@ -19,17 +20,20 @@ class _DonnordetailsState extends State<Donnordetails> {
   String category = '';
   String title = '';
 
-
   late AnnouncementService announcementService;
+late Fetchpic fetchpic ;
+ String picpath='';
 
   @override
   void initState() {
     super.initState();
+  fetchpic = Fetchpic(widget.donnation.personId);
     announcementService = AnnouncementService(widget.donnation.orgId, widget.donnation.annonceId);
     fetchData();
   }
 
-  void fetchData() {
+  void fetchData() async {
+    picpath = await fetchpic.getPic();  
     announcementService.getAnnonce().then((result) {
       setState(() {
         quantitydonated = result['quantityDonated'];
@@ -112,8 +116,19 @@ class _DonnordetailsState extends State<Donnordetails> {
                     children: [
                       Container(height: 147,width: 147,decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.clear, // Set the color of the container
-                      ),),
+                        color: AppColors.clear, 
+                      
+                      ),
+                       child: ClipRRect( // Add ClipRRect for better control
+    borderRadius: BorderRadius.circular(147), // Match container size
+    child: picpath.isEmpty
+        ? const Center(child: Text(textAlign: TextAlign.center ,'No profile picture available',style: TextStyle(fontWeight: FontWeight.w700),))
+        : Image.network(
+            picpath,
+            fit: BoxFit.cover, // Adjust as needed
+          ),
+  ),
+                      ),
                       const SizedBox(height: 20,),
                       Information(indicator: 'Full name', insideinfo: widget.donnation.fullname, suffixexist: false,category: category,),
                       const SizedBox(height: 20,),

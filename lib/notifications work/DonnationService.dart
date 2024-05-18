@@ -30,11 +30,13 @@ class DonnationService {
             personId: data['personId'] ?? '', // Handle potentially null value
             annonceId:doc.id, // Handle potentially null value
             orgId: orgId,
-            seen: data['seen'] ,
+            seen: data['seen']  ?? false,
             donnationId: donDoc.id,
           ));
         }
       }
+      
+      print(orgId);
       return donnations;
     } on FirebaseException catch (e) {
       // Handle Firebase errors (e.g., network timeouts, permission issues)

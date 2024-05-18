@@ -6,9 +6,6 @@ import 'package:secondapp/notifications%20work/donnor_details.dart';
 import 'package:secondapp/notifications%20work/notifications_page.dart';
 import 'package:secondapp/splash_screen.dart';
 
-
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Initialize Flutter framework
   await Firebase.initializeApp(
@@ -23,8 +20,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-
         debugShowCheckedModeBanner: false, home: SplashScreen());
-
-}
+  }
 }
