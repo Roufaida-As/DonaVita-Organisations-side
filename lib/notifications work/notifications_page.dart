@@ -5,6 +5,7 @@ import 'package:secondapp/notifications%20work/DonnationService.dart';
 import 'package:secondapp/notifications%20work/Donnation_card.dart';
 import 'package:secondapp/notifications%20work/Donnation_model.dart';
 import 'package:secondapp/notifications%20work/fetch_profilepic.dart';
+import 'package:secondapp/profile%20work/organisation_service.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -16,15 +17,30 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   late List<Donnation> donnations = [];
   late DonnationService donnationService;
-  late Fetchpic fetchpic ;
- String picpath='';
+  late Fetchpic fetchpic;
+  String picpath = '';
+  String userId = '';
+  FirestoreService firestoreService = FirestoreService();
 
   @override
   void initState() {
     super.initState();
-    
-    donnationService = donnations.length==0 ? DonnationService('9HliC79mP4dqx9JRgzOi29XkMhm1') : DonnationService(donnations[0].orgId);
-    getDonnations();
+    getCurrentUserId().then((id) {
+      setState(() {
+        userId = id;
+        donnationService = DonnationService(userId);
+        getDonnations();
+      });
+    });
+  }
+
+  Future<String> getCurrentUserId() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user.uid;
+    } else {
+      throw Exception('No user is currently signed in');
+    }
   }
 
   void getDonnations() async {
@@ -37,9 +53,9 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      automaticallyImplyLeading: false,
-           backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           "Notifications",
@@ -50,18 +66,20 @@ class _NotificationPageState extends State<NotificationPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-    ),
-    body: Padding(
-      padding: const EdgeInsets.only(top:8.0),
-      child:  donnations.isEmpty ? 
-        Center(child: Text('No notifications')) : 
-        ListView.builder(
-          itemCount: donnations.length,
-          itemBuilder: (BuildContext context, int index) {
-            return DonnationCard(donnation: donnations[index]);
-          },
-        ),
-    ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: donnations.isEmpty
+            ? Center(
+                child: Text('No notifications yet',
+                    style: TextStyle(color: AppColors.smallfont)))
+            : ListView.builder(
+                itemCount: donnations.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return DonnationCard(donnation: donnations[index]);
+                },
+              ),
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
+// ignore: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:secondapp/notifications%20work/Donnation_model.dart';
+import 'package:secondapp/utils/dialogs.dart';
 
 class DonnationService {
   final String orgId;
@@ -19,27 +21,31 @@ class DonnationService {
       donnations.clear(); // Clear existing entries before fetching new ones
 
       for (final doc in querySnapshot.docs) {
-        final orgDonnationsSnapshot = await doc.reference.collection('Donations').get();
+        final orgDonnationsSnapshot =
+            await doc.reference.collection('Donations').get();
         for (final donDoc in orgDonnationsSnapshot.docs) {
-          final data = donDoc.data() as Map<String, dynamic>;
+          final data = donDoc.data();
           donnations.add(Donnation(
             adress: data['adress'],
             quantitydonated: data['quantitydonated'],
             fullname: data['fullname'],
             phonenumber: data['phonenumber'],
             personId: data['personId'] ?? '', // Handle potentially null value
-            annonceId:doc.id, // Handle potentially null value
+            annonceId: doc.id, // Handle potentially null value
             orgId: orgId,
-            seen: data['seen']  ?? false,
+            seen: data['seen'] ?? false,
             donnationId: donDoc.id,
           ));
         }
       }
-      
-      print(orgId);
+
       return donnations;
     } on FirebaseException catch (e) {
       // Handle Firebase errors (e.g., network timeouts, permission issues)
-      print('Error fetching donations: ${e.message}');
+      Dialogs.showSnackBar(
+          "Error", "Error fetching donations: ${e.message}", true);
+
       return [];
-    }}}
+    }
+  }
+}

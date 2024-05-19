@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:secondapp/profile%20work/announcement_model.dart';
-import 'package:secondapp/Theme/colors.dart';
+import 'package:get/get.dart';
+
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:secondapp/Theme/colors.dart';
+import 'package:secondapp/chat%20work/chat_room.dart';
+import 'package:secondapp/profile%20work/announcement_model.dart';
+
 class DetailsPage extends StatefulWidget {
   final Announcement annonce;
   const DetailsPage({super.key, required this.annonce});
@@ -16,7 +20,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    updateDonationProgress();
+    // updateDonationProgress();
   }
 
   void updateDonationProgress() {
@@ -38,6 +42,7 @@ class _DetailsPageState extends State<DetailsPage> {
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 32,
+            fontFamily: 'Nunito',
             color: AppColors.highicons,
             fontWeight: FontWeight.bold,
           ),
@@ -45,7 +50,6 @@ class _DetailsPageState extends State<DetailsPage> {
         leading: const Padding(
           padding: EdgeInsets.only(left: 10.0),
           child: BackButton(
-            
             color: AppColors.highicons,
           ),
         ),
@@ -93,15 +97,22 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ],
                                 ),
                               ),
-                              child: Image.asset('assets/Icons/Rectangle2.png'),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(widget.annonce.imageUrl,
+                                    fit: BoxFit.cover),
+                              ),
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.network(
-                                    widget.annonce.organizationLogoUrl,
-                                    height: 70,
-                                    width: 70),
+                                ClipOval(
+                                  child: Image.network(
+                                      widget.annonce.organizationLogoUrl,
+                                      height: 70,
+                                      fit: BoxFit.cover,
+                                      width: 70),
+                                ),
                                 Text(widget.annonce.organizationName,
                                     style: const TextStyle(
                                       fontFamily: 'Roboto',
@@ -154,8 +165,7 @@ class _DetailsPageState extends State<DetailsPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 32, right: 32),
-                child: Container(
-                    child: Column(
+                child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,9 +236,11 @@ class _DetailsPageState extends State<DetailsPage> {
                     const SizedBox(
                       height: 40,
                     ),
-                    
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         LinearPercentIndicator(
-                          width: 140.0,
+                          width: 200.0,
                           lineHeight: 11.0,
                           percent: donationProgress,
                           center: Text(
@@ -236,16 +248,53 @@ class _DetailsPageState extends State<DetailsPage> {
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 10.0),
                           ),
-                          barRadius: const Radius.circular(10),
+                          barRadius: const Radius.circular(7),
                           backgroundColor: AppColors.background,
                           progressColor: AppColors.highicons,
                         ),
-                    
-                    
-                  
-                  
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 13,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      const Text("For more information",
+                          style: TextStyle(
+                              color: AppColors.icons,
+                              fontFamily: 'nunito',
+                              fontSize: 12)),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.highicons,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: GestureDetector(
+                            onTap: () => Get.to(() => const ChatRoom()),
+                            child: const Padding(
+                              padding: EdgeInsets.only(
+                                  top: 3.0,
+                                  bottom: 3.0,
+                                  left: 15.0,
+                                  right: 15.0),
+                              child: Center(
+                                  child: Text(
+                                "Contact us",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Nunito',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                            ),
+                          ))
+                    ]),
+                    const SizedBox(
+                      height: 40,
+                    ),
                   ],
-                )),
+                ),
               ),
             ],
           ),
@@ -253,6 +302,4 @@ class _DetailsPageState extends State<DetailsPage> {
       ),
     );
   }
-
- 
 }

@@ -1,5 +1,4 @@
-
-
+// ignore: file_names
 class Donnation{
  final String adress;
  final String quantitydonated;
@@ -9,6 +8,7 @@ class Donnation{
  final String annonceId;
  final String orgId;
  final bool seen;
+ // ignore: prefer_typing_uninitialized_variables
  final donnationId;
  Donnation({
   required this.adress,

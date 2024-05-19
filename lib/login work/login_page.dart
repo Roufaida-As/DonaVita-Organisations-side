@@ -4,7 +4,6 @@ import 'package:secondapp/login%20work/forgot_password_page.dart';
 import 'package:secondapp/login%20work/services.dart';
 import 'package:secondapp/login%20work/signup_page.dart';
 import 'package:secondapp/utils/button.dart';
-import 'package:secondapp/utils/item_border.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -147,7 +146,7 @@ class _LoginState extends State<Login> {
                             borderSide: const BorderSide(
                                 color: AppColors.icons, width: 2.16),
                           ),
-                          hintText: "Enter Your password",
+                          hintText: "Enter your password",
                           hintStyle: const TextStyle(
                               color: AppColors.smalltext, fontSize: 15),
                           suffixIcon: IconButton(
@@ -196,32 +195,14 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               //login button
               Button(
                 buttonText: 'Login',
                 onTap: () => login(),
               ),
-              const SizedBox(height: 40),
-              const Text(
-                "Or sign in with",
-                style: TextStyle(
-                  color: AppColors.smalltext,
-                  fontSize: 12.95,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Nunito',
-                ),
-              ),
-              const SizedBox(width: 23),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Border_(imagePath: 'assets/gg.png'),
-                  SizedBox(width: 36),
-                  Border_(imagePath: 'assets/fb.png'),
-                ],
-              ),
               const SizedBox(height: 33),
+
               // sign up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

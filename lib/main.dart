@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:secondapp/firebase_options.dart';
-import 'package:secondapp/notifications%20work/donnor_details.dart';
-import 'package:secondapp/notifications%20work/notifications_page.dart';
 import 'package:secondapp/splash_screen.dart';
 
 Future<void> main() async {
@@ -11,11 +9,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp( const MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   const MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

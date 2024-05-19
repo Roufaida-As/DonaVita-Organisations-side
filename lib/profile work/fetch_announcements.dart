@@ -23,6 +23,19 @@ class FetchAnnouncements {
           .collection('annonces')
           .get();
 
+      // Fetch the logoURL from the organisationAsUsers collection
+      DocumentSnapshot orgDoc = await _firestore
+          .collection('organisationsAsUsers')
+          .doc(currentUserId)
+          .get();
+
+      if (!orgDoc.exists) {
+        Dialogs.showSnackBar('Error', 'Organization not found', true);
+        return announcements;
+      }
+
+      String organizationLogoUrl = orgDoc.get('logoURL') as String;
+
       for (var doc in querySnapshot.docs) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
@@ -34,8 +47,12 @@ class FetchAnnouncements {
           description: data['description'],
           quantityNeeded: data['quantityNeeded'],
           endDate: data['endDate'],
-          quantityDonated: '0',
-          imageUrl: data['ImageUrl'], organizationLogoUrl: '', annonceId: doc.id,
+          quantityDonated: data.containsKey('quantityDonated')
+              ? data['quantityDonated']
+              : "not found",
+          imageUrl: data['ImageUrl'],
+          organizationLogoUrl: organizationLogoUrl,
+          annonceId: doc.id,
         );
 
         announcements.add(announcement);
@@ -44,7 +61,8 @@ class FetchAnnouncements {
       return announcements;
     } catch (error) {
       // Handle error
-      Dialogs.showSnackBar('Error', 'Error fetching announcements: $error', true);
+      Dialogs.showSnackBar(
+          'Error', 'Error fetching announcements: $error', true);
       return announcements;
     }
   }
@@ -59,5 +77,3 @@ class FetchAnnouncements {
     }
   }
 }
-
-

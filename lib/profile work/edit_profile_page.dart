@@ -35,7 +35,7 @@ class _EditProfileState extends State<EditProfile> {
         if (mounted) {
           setState(() {
             this.organisation = organisation;
-            
+
             fullnamecontroller.text = this.organisation?.organizationName ?? "";
             phonenumbercontroller.text = this.organisation?.phoneNumber ?? "";
           });
@@ -105,7 +105,7 @@ class _EditProfileState extends State<EditProfile> {
                           children: <Widget>[
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Text('Full name',
+                              child: Text('Organisation name',
                                   style: TextStyle(
                                       color: AppColors.icons,
                                       fontSize: 16,
@@ -150,7 +150,6 @@ class _EditProfileState extends State<EditProfile> {
                         const SizedBox(
                           height: 15,
                         ),
-                        
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -236,8 +235,8 @@ class _EditProfileState extends State<EditProfile> {
     String? userId = await editInofs.getCurrentUserId();
     if (userId != null) {
       //  update organisation inofs
-      await editInofs.editOrgInfos(userId,
-          fullnamecontroller.text, phonenumbercontroller.text);
+      await editInofs.editOrgInfos(
+          userId, fullnamecontroller.text, phonenumbercontroller.text);
       Get.back();
       Get.to(() => const ProfilePage());
     } else {

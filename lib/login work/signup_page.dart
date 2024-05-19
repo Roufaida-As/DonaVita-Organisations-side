@@ -301,7 +301,7 @@ class _SignUpState extends State<SignUp> {
                             borderSide: const BorderSide(
                                 color: AppColors.icons, width: 2.16),
                           ),
-                          hintText: "Enter Your password",
+                          hintText: "Enter your password",
                           hintStyle: const TextStyle(
                               color: AppColors.smalltext, fontSize: 15),
                           suffixIcon: IconButton(
@@ -361,7 +361,7 @@ class _SignUpState extends State<SignUp> {
                             borderSide: const BorderSide(
                                 color: AppColors.icons, width: 2.16),
                           ),
-                          hintText: "Enter Your password",
+                          hintText: "Enter your password",
                           hintStyle: const TextStyle(
                               color: AppColors.smalltext, fontSize: 15),
                           suffixIcon: IconButton(

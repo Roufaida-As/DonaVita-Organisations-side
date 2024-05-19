@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:secondapp/Theme/colors.dart';
@@ -84,12 +85,12 @@ class _DonnationCardState extends State<DonnationCard> {
                   ),
                 ],
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               SizedBox(
                 width: 100,
                 child: Text(
                   widget.donnation.fullname,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.details,
                     fontFamily: 'Nunito',
                     fontSize: 16,
@@ -98,8 +99,8 @@ class _DonnationCardState extends State<DonnationCard> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              SizedBox(width: 7),
-              Text(
+              const SizedBox(width: 7),
+              const Text(
                 'donated',
                 style: TextStyle(
                   color: AppColors.details,
@@ -108,7 +109,7 @@ class _DonnationCardState extends State<DonnationCard> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
                   db
@@ -126,7 +127,7 @@ class _DonnationCardState extends State<DonnationCard> {
                     ),
                   );
                 },
-                child: Text(
+                child: const Text(
                   'show more',
                   style: TextStyle(
                     color: AppColors.details,

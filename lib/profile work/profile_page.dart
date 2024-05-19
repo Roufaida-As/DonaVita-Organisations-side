@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondapp/Theme/colors.dart';
+import 'package:secondapp/login%20work/services.dart';
 
 import 'package:secondapp/profile%20work/Announcment_details.dart';
 import 'package:secondapp/profile%20work/add_org_logo.dart';
 import 'package:secondapp/profile%20work/announcement_card.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
+import 'package:secondapp/profile%20work/detailspage.dart';
 import 'package:secondapp/profile%20work/edit_profile_page.dart';
 import 'package:secondapp/profile%20work/fetch_announcements.dart';
 
@@ -165,7 +167,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     setState(() {
                                       isLogoHidden = !isLogoHidden;
                                     });
-                                   
                                   },
                                 )),
                           ],
@@ -341,16 +342,43 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         Expanded(
+            flex: 6,
             child: ListView.builder(
-          itemCount: announcements.length,
-          itemBuilder: (context, index) {
-            return SafeArea(
-              child: AnnouncementCard(
-                announcement: announcements[index],
-              ),
-            );
-          },
-        ))
+              itemCount: announcements.length,
+              itemBuilder: (context, index) {
+                return SafeArea(
+                  child: AnnouncementCard(
+                    announcement: announcements[index],
+                    onDetailsPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              DetailsPage(annonce: announcements[index])),
+                    ),
+                  ),
+                );
+              },
+            )),
+        Expanded(
+            child: TextButton(
+                onPressed: () => Services.signOut(),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.logout_rounded,
+                      color: Colors.red,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Log out",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    )
+                  ],
+                )))
       ]),
     );
   }
