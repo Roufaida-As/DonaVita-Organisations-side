@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:secondapp/Theme/colors.dart';
-import 'package:secondapp/chat%20work/chat_room.dart';
 import 'package:secondapp/profile%20work/announcement_model.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -254,42 +251,6 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 13,
-                    ),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      const Text("For more information",
-                          style: TextStyle(
-                              color: AppColors.icons,
-                              fontFamily: 'nunito',
-                              fontSize: 12)),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          decoration: BoxDecoration(
-                              color: AppColors.highicons,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: GestureDetector(
-                            onTap: () => Get.to(() => const ChatRoom()),
-                            child: const Padding(
-                              padding: EdgeInsets.only(
-                                  top: 3.0,
-                                  bottom: 3.0,
-                                  left: 15.0,
-                                  right: 15.0),
-                              child: Center(
-                                  child: Text(
-                                "Contact us",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Nunito',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                            ),
-                          ))
-                    ]),
                     const SizedBox(
                       height: 40,
                     ),

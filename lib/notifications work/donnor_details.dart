@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:secondapp/Theme/colors.dart';
+import 'package:secondapp/chat%20work/chat_room.dart';
 import 'package:secondapp/home_screen.dart';
 import 'package:secondapp/notifications%20work/Donnation_model.dart';
 import 'package:secondapp/notifications%20work/fetch_profilepic.dart';
@@ -198,14 +199,17 @@ class _DonnordetailsState extends State<Donnordetails> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: AppColors.icons),
-                            child: const Center(
-                                child: Text(
-                              'Chat',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 14),
+                            child: Center(
+                                child: GestureDetector(
+                                  onTap:  () => Get.to(() => const ChatRoom()),
+                              child: Text(
+                                'Chat',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Nunito',
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14),
+                              ),
                             )),
                           ),
                           Container(
