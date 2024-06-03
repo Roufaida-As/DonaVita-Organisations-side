@@ -7,8 +7,9 @@ import 'package:secondapp/profile%20work/announcement_model.dart';
 
 class AnnouncementCard extends StatefulWidget {
   final Announcement announcement;
-   final VoidCallback? onDetailsPressed;
-  const AnnouncementCard({super.key, required this.announcement, required this.onDetailsPressed});
+  final VoidCallback? onDetailsPressed;
+  const AnnouncementCard(
+      {super.key, required this.announcement, required this.onDetailsPressed});
 
   @override
   State<AnnouncementCard> createState() => _AnnouncementCardState();
@@ -52,11 +53,13 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                   left: 20,
                   bottom: 5,
                   child: ClipOval(
-      
                     child: SizedBox(
                         height: 54,
                         width: 54,
-                        child: Image.network(widget.announcement.imageUrl,fit: BoxFit.cover,)),
+                        child: Image.network(
+                          widget.announcement.imageUrl,
+                          fit: BoxFit.cover,
+                        )),
                   ),
                 ),
                 const SizedBox(
@@ -94,7 +97,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                         backgroundColor: AppColors.background,
                         progressColor: AppColors.highicons,
                       ),
-      
+
                       const SizedBox(
                         height: 3,
                       ),

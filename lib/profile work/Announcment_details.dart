@@ -332,11 +332,15 @@ class _AnnonceDetailsState extends State<AnnonceDetails> {
 
                                 quantitycontroller.clear();
                                 deadlinecontroller.clear();
+                                Get.back();
 
                                 Dialogs.showSnackBar(
-                                    "Success", "informations uploaded", true);
+                                    "Success", "informations uploaded", false);
 
-                                Get.to(() => const HomeScreen());
+                                // Dismiss the loading animation dialog
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                                Get.to(() => HomeScreen());
                               },
                               child: Container(
                                 width: 140,

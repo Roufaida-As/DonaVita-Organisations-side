@@ -201,7 +201,7 @@ class _DonnordetailsState extends State<Donnordetails> {
                                 color: AppColors.icons),
                             child: Center(
                                 child: GestureDetector(
-                                  onTap:  () => Get.to(() => const ChatRoom()),
+                              onTap: () => Get.to(() => const ChatRoom()),
                               child: Text(
                                 'Chat',
                                 style: TextStyle(
@@ -268,7 +268,8 @@ class _DonnordetailsState extends State<Donnordetails> {
                                           onError: (e) =>
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(snackBar2));
-
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
                                   Get.to(() => HomeScreen());
                                 },
                                 child: const Center(

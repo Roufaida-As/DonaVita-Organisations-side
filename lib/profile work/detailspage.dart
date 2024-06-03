@@ -96,8 +96,11 @@ class _DetailsPageState extends State<DetailsPage> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.network(widget.annonce.imageUrl,
-                                    fit: BoxFit.cover),
+                                child: Image.network(
+                                  widget.annonce.imageUrl,
+                                  fit: BoxFit.cover,
+                                  opacity: AlwaysStoppedAnimation(0.8),
+                                ),
                               ),
                             ),
                             Column(
@@ -113,7 +116,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 Text(widget.annonce.organizationName,
                                     style: const TextStyle(
                                       fontFamily: 'Roboto',
-                                      fontSize: 15,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.icons,
                                     )),
