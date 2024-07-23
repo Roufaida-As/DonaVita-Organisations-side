@@ -1,4 +1,5 @@
-# secondapp
+# Donavita
+# for charities
 
 A new Flutter project.
 
