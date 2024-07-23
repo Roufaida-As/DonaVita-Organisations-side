@@ -1,1 +1,2 @@
-# DonaVita/Organisations-side 
+# DonaVita
+# for charities 
